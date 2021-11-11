@@ -22,7 +22,7 @@ import java.util.UUID;
 public class Writer {
 
     @Id
-    private UUID id;
+    private String id;
 
     @Field(type = FieldType.Keyword)
     private String firstName;

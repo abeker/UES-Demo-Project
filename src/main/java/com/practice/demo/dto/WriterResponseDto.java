@@ -4,10 +4,13 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Builder
 @Data
-public class WriterDto {
+public class WriterResponseDto {
+
+    private String id;
 
     private String firstName;
 
