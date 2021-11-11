@@ -1,4 +1,4 @@
-package com.practice.demo.service;
+package com.practice.demo.service.interfaces;
 
 import com.practice.demo.dto.ReaderDto;
 

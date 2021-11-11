@@ -1,7 +1,7 @@
 package com.practice.demo.controller;
 
 import com.practice.demo.dto.ReaderDto;
-import com.practice.demo.service.IReaderService;
+import com.practice.demo.service.interfaces.IReaderService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
