@@ -8,6 +8,7 @@ import com.practice.demo.repository.IWriterRepository;
 import com.practice.demo.service.interfaces.IWriterService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,18 @@ public class WriterService implements IWriterService {
     @Override
     public List<WriterResponseDto> getWritersWithMoreThanPublishedBooks(int nrOfPublishedBooks) {
         List<Writer> writers = _writerRepository.findByNrPublishedBooksGreaterThan(nrOfPublishedBooks);
+        return mapWritersToWritersDto(writers);
+    }
+
+    @Override
+    public List<WriterResponseDto> getWritersYoungerThan(LocalDate date) {
+        List<Writer> writers = _writerRepository.findByDateOfBirthGreaterThan(date);
+        return mapWritersToWritersDto(writers);
+    }
+
+    @Override
+    public List<WriterResponseDto> getWritersByBiography(String biography) {
+        List<Writer> writers = _writerRepository.findAllByBiography(biography);
         return mapWritersToWritersDto(writers);
     }
 

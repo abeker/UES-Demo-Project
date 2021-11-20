@@ -1,10 +1,12 @@
 package com.practice.demo.controller;
 
+import com.practice.demo.dto.BiographyRequestDto;
 import com.practice.demo.dto.WriterRequestDto;
 import com.practice.demo.dto.WriterResponseDto;
 import com.practice.demo.service.interfaces.IWriterService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -27,13 +29,23 @@ public class WriterController {
         return _writerService.getWritersByFirstName(firstName);
     }
 
-    @GetMapping("/{firstName}/{lastName}")
-    public List<WriterResponseDto> getByFirstAndLastName(@PathVariable String firstName, @PathVariable String lastName) {
+    @GetMapping("")
+    public List<WriterResponseDto> getByFirstAndLastName(@RequestParam(name = "firstName") String firstName, @RequestParam(name = "lastName") String lastName) {
         return _writerService.getWritersByFirstNameAndLastName(firstName, lastName);
     }
 
-    @GetMapping("/books/{nrPublishedBooks}")
-    public List<WriterResponseDto> getByMoreThanPublishedBooks(@PathVariable int nrPublishedBooks) {
+    @GetMapping("/books")
+    public List<WriterResponseDto> getByMoreThanPublishedBooks(@RequestParam(name = "minBooks") int nrPublishedBooks) {
         return _writerService.getWritersWithMoreThanPublishedBooks(nrPublishedBooks);
+    }
+
+    @GetMapping("/date-of-birth")
+    public List<WriterResponseDto> getByDateOfBirth(@RequestParam(name = "minDate") String date) {
+        return _writerService.getWritersYoungerThan(LocalDate.parse(date));
+    }
+
+    @GetMapping("/biography")
+    public List<WriterResponseDto> getByBiography(@RequestBody BiographyRequestDto biography) {
+        return _writerService.getWritersByBiography(biography.getText());
     }
 }

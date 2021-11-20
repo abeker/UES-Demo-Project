@@ -3,6 +3,7 @@ package com.practice.demo.service.interfaces;
 import com.practice.demo.dto.WriterRequestDto;
 import com.practice.demo.dto.WriterResponseDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IWriterService {
@@ -15,4 +16,7 @@ public interface IWriterService {
 
     List<WriterResponseDto> getWritersWithMoreThanPublishedBooks(int nrOfPublishedBooks);
 
+    List<WriterResponseDto> getWritersYoungerThan(LocalDate date);
+
+    List<WriterResponseDto> getWritersByBiography(String biography);
 }

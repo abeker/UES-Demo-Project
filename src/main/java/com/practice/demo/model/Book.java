@@ -10,33 +10,21 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.Setting;
 
-import java.time.LocalDate;
-import java.util.UUID;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
-@Document(indexName = "writers")
+@Document(indexName = "books")
 @Setting(settingPath = "/analyzers/serbianAnalyzer.json")
-public class Writer {
+public class Book {
 
     @Id
     private String id;
 
-    @Field(type = FieldType.Text)
-    private String firstName;
-
     @Field(type = FieldType.Keyword)
-    private String lastName;
-
-    @Field(type = FieldType.Date)
-    private LocalDate dateOfBirth;
-
-    @Field(type = FieldType.Integer)
-    private int nrPublishedBooks;
+    private String headline;
 
     @Field(type = FieldType.Text)
-    private String biography;
-}
+    private String text;
 
+}
