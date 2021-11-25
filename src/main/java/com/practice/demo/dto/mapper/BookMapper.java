@@ -8,14 +8,16 @@ public class BookMapper {
 
     public static Book mapModel(BookRequestDto bookRequestDto) {
         return Book.builder()
-                .headline(bookRequestDto.getHeadline())
-                .text(bookRequestDto.getText())
+                .title(bookRequestDto.getHeadline())
+                .author(bookRequestDto.getAuthor())
+                .genres(bookRequestDto.getGenreNames())
+                .price(bookRequestDto.getPrice())
                 .build();
     }
 
     public static BookResponseDto mapResponseDto(Book book) {
         return BookResponseDto.builder()
-                .headline(book.getHeadline())
+                .headline(book.getTitle())
                 .text(book.getText())
                 .build();
     }

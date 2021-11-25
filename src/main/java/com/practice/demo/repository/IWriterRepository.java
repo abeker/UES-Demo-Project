@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
-public interface IWriterRepository extends ElasticsearchRepository<Writer, UUID> {
+public interface IWriterRepository extends ElasticsearchRepository<Writer, String> {
+
+    Writer findOneByUsername(String username);
 
     List<Writer> findAllByFirstName(String firstName);
 
