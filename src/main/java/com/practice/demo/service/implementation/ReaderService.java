@@ -1,8 +1,9 @@
-package com.practice.demo.service;
+package com.practice.demo.service.implementation;
 
 import com.practice.demo.dto.ReaderDto;
 import com.practice.demo.model.Reader;
 import com.practice.demo.repository.IReaderRepository;
+import com.practice.demo.service.interfaces.IReaderService;
 import org.springframework.stereotype.Service;
 
 @Service
