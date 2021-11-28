@@ -9,6 +9,8 @@ import java.time.LocalDate;
 @Data
 public class WriterRequestDto {
 
+    private String username;
+
     private String firstName;
 
     private String lastName;

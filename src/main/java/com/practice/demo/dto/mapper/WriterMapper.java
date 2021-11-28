@@ -8,6 +8,7 @@ public class WriterMapper {
 
     public static Writer mapModel(WriterRequestDto writerRequestDto) {
         return Writer.builder()
+                .username(writerRequestDto.getUsername())
                 .firstName(writerRequestDto.getFirstName())
                 .lastName(writerRequestDto.getLastName())
                 .dateOfBirth(writerRequestDto.getDateOfBirth())
@@ -18,6 +19,7 @@ public class WriterMapper {
 
     public static WriterRequestDto mapRequestDto(Writer writer) {
         return WriterRequestDto.builder()
+                .username(writer.getUsername())
                 .firstName(writer.getFirstName())
                 .lastName(writer.getLastName())
                 .dateOfBirth(writer.getDateOfBirth())
@@ -29,6 +31,7 @@ public class WriterMapper {
     public static WriterResponseDto mapResponseDto(Writer writer) {
         return WriterResponseDto.builder()
                 .id(writer.getId())
+                .username(writer.getUsername())
                 .firstName(writer.getFirstName())
                 .lastName(writer.getLastName())
                 .dateOfBirth(writer.getDateOfBirth())
