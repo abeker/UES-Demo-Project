@@ -29,6 +29,13 @@ public class SearchQueryGenerator {
     }
 
     /**
+     * @return range query builder with parameters
+     * */
+    public static QueryBuilder createRangeQueryBuilder(SimpleQueryEs simpleQueryEs) {
+        return QueryBuilderCustom.buildQuery(SearchType.RANGE, simpleQueryEs.getField(), simpleQueryEs.getValue());
+    }
+
+    /**
      * @param field - field from the index that is nested object
      * @param boolQueryBuilder - created query builder (should, must, must_not or something else)
      * @param scoreMode - score mode that is related with the nested query (None, Avg, Max, Total, Min)

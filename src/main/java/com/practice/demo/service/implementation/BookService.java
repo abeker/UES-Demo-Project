@@ -2,14 +2,26 @@ package com.practice.demo.service.implementation;
 
 import com.practice.demo.dto.BookRequestDto;
 import com.practice.demo.dto.BookResponseDto;
+import com.practice.demo.dto.SimpleQueryEs;
 import com.practice.demo.dto.mapper.BookMapper;
+import com.practice.demo.dto.mapper.ReaderMapper;
 import com.practice.demo.lucene.indexing.handlers.*;
 import com.practice.demo.model.Book;
+import com.practice.demo.model.Reader;
 import com.practice.demo.model.Writer;
 import com.practice.demo.repository.IBookRepository;
 import com.practice.demo.repository.IWriterRepository;
 import com.practice.demo.service.interfaces.IBookService;
+import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +37,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+
 @SuppressWarnings("SpellCheckingInspection")
 @Service
 public class BookService implements IBookService {
@@ -37,10 +52,12 @@ public class BookService implements IBookService {
 
     private final IBookRepository _bookRepository;
     private final IWriterRepository _writerRepository;
+    private final ElasticsearchRestTemplate _elasticsearchRestTemplate;
 
-    public BookService(IBookRepository bookRepository, IWriterRepository writerRepository) {
+    public BookService(IBookRepository bookRepository, IWriterRepository writerRepository, ElasticsearchRestTemplate elasticsearchRestTemplate) {
         _bookRepository = bookRepository;
         _writerRepository = writerRepository;
+        _elasticsearchRestTemplate = elasticsearchRestTemplate;
     }
 
     @Override
@@ -54,7 +71,7 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public List<BookResponseDto> getBooksByText(String text) {
+    public List<BookResponseDto> findByText(String text) {
         List<Book> books = _bookRepository.findAllByText(text);
         return mapBooksToBookResponseDto(books);
     }
@@ -136,6 +153,36 @@ public class BookService implements IBookService {
             file = new File(url.getPath());
         }
         return file;
+    }
+
+    @Override
+    public List<BookResponseDto> findByPrice(double from, double to) {
+        String range = from + "-" + to;
+        QueryBuilder priceQuery = SearchQueryGenerator.createRangeQueryBuilder(new SimpleQueryEs("price", range));
+
+        BoolQueryBuilder boolQueryPrice = QueryBuilders
+                .boolQuery()
+                .must(priceQuery);
+
+        return BookMapper.mapDtos(searchByBoolQuery(boolQueryPrice));
+    }
+
+    private SearchHits<Book> searchByBoolQuery(BoolQueryBuilder boolQueryBuilder) {
+        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(boolQueryBuilder)
+                .build();
+
+        return _elasticsearchRestTemplate.search(searchQuery, Book.class,  IndexCoordinates.of("books"));
+    }
+
+    private QueryBuilder createNestedQueryBuilder(SimpleQueryEs simpleQueryEs, String fieldName) {
+        BoolQueryBuilder boolQueryBuilder = boolQuery();
+        BoolQueryBuilder nestedBoolQueryBuilder =
+                boolQuery().must(
+                    boolQuery()
+                    .should(termQuery(fieldName, simpleQueryEs.getValue())));
+        QueryBuilder nestedQueryBuilder = QueryBuilders.nestedQuery(simpleQueryEs.getField(), nestedBoolQueryBuilder, ScoreMode.Avg);
+        return boolQueryBuilder.must(nestedQueryBuilder);
     }
 
     public static DocumentHandler getDocumentHandler(String fileName) {

@@ -23,6 +23,6 @@ public class ReaderController {
 
     @GetMapping
     public List<ReaderDto> readersByFirstNameLastName(@RequestParam(name = "firstName") String firstName, @RequestParam(name = "lastName") String lastName) {
-        return _readerService.readersByFirstNameLastName(firstName, lastName);
+        return _readerService.readersByFirstNameAndLastName(firstName, lastName);
     }
 }

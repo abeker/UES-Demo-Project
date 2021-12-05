@@ -24,7 +24,7 @@ public class BookController {
 
     @GetMapping("/text")
     public List<BookResponseDto> getByText(@RequestBody BookTextRequestDto text) {
-        return _bookService.getBooksByText(text.getText());
+        return _bookService.findByText(text.getText());
     }
 
     @GetMapping("/reindex")
@@ -35,6 +35,11 @@ public class BookController {
     @PostMapping(path = "/pdf", consumes = { "multipart/form-data" })
     public void multiUploadFileModel(@ModelAttribute BookRequestDto uploadModel) throws IOException {
        _bookService.indexUploadedFile(uploadModel);
+    }
+
+    @GetMapping("/price")
+    public List<BookResponseDto> getByPriceRange(@RequestParam(name = "from") double from, @RequestParam(name = "to") double to) {
+        return _bookService.findByPrice(from, to);
     }
 
 }
