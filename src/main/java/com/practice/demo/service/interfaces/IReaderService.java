@@ -8,5 +8,5 @@ public interface IReaderService {
 
     void index(ReaderDto readerDto);
 
-    List<ReaderDto> readersByFirstNameLastName(String firstName, String lastName);
+    List<ReaderDto> readersByFirstNameAndLastName(String firstName, String lastName);
 }

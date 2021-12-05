@@ -42,7 +42,7 @@ public class ReaderService implements IReaderService {
     }
 
     @Override
-    public List<ReaderDto> readersByFirstNameLastName(String firstName, String lastName) {
+    public List<ReaderDto> readersByFirstNameAndLastName(String firstName, String lastName) {
         QueryBuilder firstNameQuery = SearchQueryGenerator.createMatchQueryBuilder(new SimpleQueryEs("firstName", firstName));
         QueryBuilder lastNameQuery = SearchQueryGenerator.createMatchQueryBuilder(new SimpleQueryEs("lastName", lastName));
 
