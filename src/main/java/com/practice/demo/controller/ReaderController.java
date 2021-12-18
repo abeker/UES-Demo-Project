@@ -4,6 +4,8 @@ import com.practice.demo.dto.ReaderDto;
 import com.practice.demo.service.interfaces.IReaderService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/readers")
 public class ReaderController {
@@ -17,5 +19,10 @@ public class ReaderController {
     @PostMapping
     public void index(@RequestBody ReaderDto readerDto) {
         _readerService.index(readerDto);
+    }
+
+    @GetMapping
+    public List<ReaderDto> readersByFirstNameLastName(@RequestParam(name = "firstName") String firstName, @RequestParam(name = "lastName") String lastName) {
+        return _readerService.readersByFirstNameAndLastName(firstName, lastName);
     }
 }

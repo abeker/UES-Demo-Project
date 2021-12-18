@@ -2,7 +2,12 @@ package com.practice.demo.dto.mapper;
 
 import com.practice.demo.dto.BookRequestDto;
 import com.practice.demo.dto.BookResponseDto;
+import com.practice.demo.dto.ReaderDto;
 import com.practice.demo.model.Book;
+import com.practice.demo.model.Reader;
+import org.springframework.data.elasticsearch.core.SearchHits;
+
+import java.util.List;
 
 public class BookMapper {
 
@@ -22,4 +27,9 @@ public class BookMapper {
                 .build();
     }
 
+    public static List<BookResponseDto> mapDtos(SearchHits<Book> searchHits) {
+        return searchHits
+                .map(book -> mapResponseDto(book.getContent()))
+                .toList();
+    }
 }

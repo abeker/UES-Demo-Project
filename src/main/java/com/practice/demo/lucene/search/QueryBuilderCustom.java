@@ -26,7 +26,7 @@ public class QueryBuilderCustom {
 		} else if(queryType.equals(SearchType.PREFIX)){
 			return QueryBuilders.prefixQuery(field, value);
 		} else if(queryType.equals(SearchType.RANGE)){
-			String[] values = value.split(" ");
+			String[] values = value.split("-");
 			return QueryBuilders.rangeQuery(field).from(values[0]).to(values[1]);
 		} else{
 			return QueryBuilders.matchPhraseQuery(field, value);

@@ -2,6 +2,7 @@ package com.practice.demo.service.interfaces;
 
 import com.practice.demo.dto.BookRequestDto;
 import com.practice.demo.dto.BookResponseDto;
+import com.practice.demo.dto.ReaderDto;
 import com.practice.demo.dto.WriterResponseDto;
 import com.practice.demo.model.Book;
 
@@ -15,7 +16,7 @@ public interface IBookService {
 
     void index(Book book);
 
-    List<BookResponseDto> getBooksByText(String text);
+    List<BookResponseDto> findByText(String text);
 
     void reindex();
 
@@ -24,5 +25,7 @@ public interface IBookService {
     void indexUploadedFile(BookRequestDto bookRequestDto) throws IOException;
 
     File getResourceFilePath(String path);
+
+    List<BookResponseDto> findByPrice(double from, double to);
 
 }
